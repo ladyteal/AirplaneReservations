@@ -9,6 +9,7 @@ package airplanereservations;
 import javax.swing.*;
 import java.awt.*;
 import javax.swing.border.Border;
+import java.awt.event.*;
 /**
  *
  * @author Mark Rustad
@@ -56,6 +57,8 @@ public class MainWindow extends JFrame{
         createSeats();
         createFlightInformation();
         createYourInformationPanel();
+        
+        addButtonListeners();
         pack();
         setVisible(true);
     }
@@ -231,6 +234,59 @@ public class MainWindow extends JFrame{
         flightInformationPanel.add(flightLabel);
         JLabel flightInfo = new JLabel(flightNumber_S);
         flightInformationPanel.add(flightInfo);
+    }
+    
+    public void addButtonListeners()
+    {
+        //add event listener to the purchase button
+        purchaseButton.addActionListener(new ActionListener()
+                {
+                    public void actionPerformed(ActionEvent e)
+                    {
+                        purchaseButtonAction(e);
+                    }
+                });
+        
+        //add event listeners to each seat button
+        for(int index = 0; index < buttonArray.length; index++)
+        {
+            buttonArray[index].addActionListener(new ActionListener()
+                    {
+                        public void actionPerformed(ActionEvent e)
+                        {
+                            seatButtonPressed(e);
+                        }
+                    });
+        }
+        
+    }
+    
+    public void purchaseButtonAction(ActionEvent e)
+    {
+        totalPriceDisplay.setText("Purchase button pressed");
+    }
+
+    public void seatButtonPressed(ActionEvent e)
+    {
+        //selectedSeatsDisplay.setText("SeatButtonPressed");//debugging line
+        
+        //go throught the button array to see if it was the button
+        for(int index = 0; index < buttonArray.length; index++)
+        {
+            //if it is, then add it to the seat display
+            if (e.getSource() == buttonArray[index])
+            {
+                String currentSeats = selectedSeatsDisplay.getText();
+                String selectedSeatName = seatNames[index];
+                selectedSeatsDisplay.setText(currentSeats +", " + selectedSeatName);
+            }
+            else
+            {
+                //do nothing, just a test
+            }
+        }
+        
+        
     }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
